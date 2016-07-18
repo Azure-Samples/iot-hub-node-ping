@@ -1,0 +1,185 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+    "contentVersion": "1.0.0.0",
+  "parameters": {
+    "region": {
+      "type": "string",
+      "allowedValues": [
+        "East US",
+        "West US",
+        "North Europe",
+        "West Europe",
+        "East Asia",
+        "South East Asia",
+        "Japan East",
+        "Japan West",
+        "Australia East",
+        "Australia SouthEast",
+        "North Europe"
+      ],
+      "metadata": {
+        "description": "The Region to deploy the solution to"
+      }
+    },
+    "solutionName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of your solution (will be used to prefix the services names)"
+      }
+    },
+        "iotHubSku": {
+      "type": "string",
+      "allowedValues": [
+        "F1",
+        "S1",
+        "S2"
+      ],
+      "defaultValue": "S1",
+      "metadata": {
+        "description": "The Iothub Sku"
+      }
+    },
+    "functionSku": {
+      "type": "string",
+      "allowedValues": [
+        "Free",
+        "Shared",
+        "Basic",
+        "Standard"
+      ],
+      "defaultValue": "Standard",
+      "metadata": {
+        "description": "The pricing tier for the hosting plan for Azure Function."
+      }
+    }
+  },
+  "variables": {
+    "location": "[parameters('region')]",
+    "storageVersion": "2015-06-15",
+    "storageName": "[concat(parameters('solutionName'), 'storage')]",
+    "storageId": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
+    "storageAccountSku": "Standard_LRS",
+    "webVersion": "2015-04-01",
+    "webSiteName": "[parameters('solutionName')]",
+    "iotHubVersion": "2016-02-03",
+    "iotHubTier": "Standard",
+    "iotHubName": "[concat(parameters('solutionName'), 'hub')]",
+    "iotHubResourceId": "[resourceId('Microsoft.Devices/Iothubs', variables('iotHubName'))]",
+    "iotHubKeyName": "iothubowner",
+    "iotHubKeyResource": "[resourceId('Microsoft.Devices/Iothubs/Iothubkeys', variables('iotHubName'), variables('iotHubKeyName'))]",
+    "functionAppName": "[concat(parameters('solutionName'), 'functionApp')]",
+    "functionName": "iothubpingfunction",
+    "functionWorkerSize": "0",
+    "repoUrl":"https://github.com/azure-samples/iot-hub-node-ping",
+    "branch":"master"
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('storageVersion')]",
+      "location": "[variables('location')]",
+      "name": "[variables('storageName')]",
+      "properties": {
+        "accountType": "[variables('storageAccountSku')]"
+      },
+      "type": "Microsoft.Storage/storageAccounts",
+      "tags": {
+        "displayName": "storage"
+      }
+    },
+    {
+      "apiVersion": "[variables('iotHubVersion')]",
+      "type": "Microsoft.Devices/Iothubs",
+      "name": "[variables('iotHubName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "[parameters('iotHubSku')]",
+        "tier": "[variables('iotHubTier')]",
+        "capacity": 1
+      },
+      "properties": {
+        "location": "[variables('location')]"
+      },
+      "tags": {
+        "displayName": "IoTHub"
+      }
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "type": "Microsoft.Web/sites",
+      "name": "[variables('functionAppName')]",
+      "location": "[variables('location')]",
+      "kind": "functionapp",
+      "properties": {
+        "name": "[variables('functionAppName')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
+        "[concat('Microsoft.Devices/Iothubs/', variables('iotHubName'))]"
+      ],
+      "resources": [
+        {
+          "apiVersion": "2015-08-01",
+          "name": "appsettings",
+          "type": "config",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]",
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
+          ],
+          "properties": {
+            "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2015-05-01-preview').key1,';')]",
+            "AzureWebJobsDashboard": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2015-05-01-preview').key1,';')]",
+            "AZUREJOBS_EXTENSION_VERSION": "beta",
+            "FUNCTIONS_EXTENSION_VERSION": "~0.2",
+	          "AzureIoTHubConnectionString": "[concat('HostName=', reference(variables('iotHubResourceId')).hostName, ';SharedAccessKeyName=', variables('iotHubKeyName'), ';SharedAccessKey=', listkeys(variables('iotHubKeyResource'), variables('iotHubVersion')).primaryKey)]",
+            "AzureIoTHubEventHubConnectionString": "[concat('Endpoint=', reference(variables('iotHubResourceId')).eventHubEndpoints.events.endpoint, ';SharedAccessKeyName=', variables('iotHubKeyName'), ';SharedAccessKey=', listkeys(variables('iotHubKeyResource'), variables('iotHubVersion')).primaryKey)]"
+          }
+        },
+        {
+            "apiVersion": "2015-08-01",
+            "name": "web",
+            "type": "sourcecontrols",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites/', variables('functionAppName'))]",
+                "[resourceId('Microsoft.Web/Sites/config', variables('functionAppName'), 'appsettings')]"
+            ],
+            "properties": {
+                "RepoUrl": "[variables('repoUrl')]",
+                "branch": "[variables('branch')]",
+                "IsManualIntegration": true
+            }
+        },       
+        {
+          "apiVersion": "2015-08-01",
+          "name": "[variables('functionName')]",
+          "type": "functions",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]",
+            "[resourceId('Microsoft.Web/Sites/config', variables('functionAppName'), 'appsettings')]",
+            "[resourceId('Microsoft.Web/Sites/sourcecontrols', variables('functionAppName'), 'web')]",
+            "[concat('Microsoft.Devices/Iothubs/', variables('iotHubName'))]"
+          ],
+          "properties": {
+             "config": {
+                "bindings": [
+                  {
+                      "name": "myEventHubTrigger",
+                      "direction": "in",
+                      "type": "eventHubTrigger",
+                      "path": "[variables('iotHubName')]",
+                      "connection": "AzureIoTHubEventHubConnectionString"
+                  }
+                ]
+            },
+            "test_data": "{ 'deviceId': 'nodedevice', 'message': 'Hello' }"
+          }
+        }
+      ],
+      "tags": {
+        "displayName": "Function App"
+      }
+    }
+  ],
+  "outputs": {
+
+  }
+}
