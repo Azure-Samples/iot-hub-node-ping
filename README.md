@@ -1,9 +1,3 @@
----
-services: iot-hub, functions
-platforms: node
-author: olivierbloch
----
-
 # Azure IoT Hub ping #
 Simple "ping" solution to help validate a device connectivity to Azure IoT Hub.
 The solution consists in an Azure IoT Hub and an Azure Function deployed at once. The Azure Function is triggered when a new message is received on the IoT Hub and will send the same message content back to the device that sent it.
@@ -12,7 +6,26 @@ It also contains a simple device sample written in JavaScript for Node.js.
 
 ## Deploy the ping solution ##
 
-Deployment of the solution simply consists in clicking on the below button.
+If you are deploying from the azure-sample web page, read below. If you are deploying from the GitHub Readme.md file, skip next chapter and go directly to the "Deploying with the Deploy button on the GitHub Readme.md page" one.
+
+### Deploying from the azure-sample web page ###
+
+When deploying from the azure-samples web page, you will be redirected to the Azure portal for login and the custom deployment of the ARM template will start.
+
+  - Enter parameters for the solution in the "Parameters" blade appearing when clicking on *parameters*:
+    - Region: pick the region you want the services to be deployed to.
+    - Choose a solution name: **Important**, the solution name should be all lower case, only ascii caracters and no longer that 16 characters.
+    - IoT Hub Sku: select the Sku you want for the IoT Hub : F1 (Free), S1 or S2. Note that you can only have 1 instance of F1 per Azure subscription.
+    - Function Sku: select the Sku you wnat for the Azure Function.
+  - Subscription: this is the subscription you want the services to be deployed to if you have several Azure subscriptions.
+  - Resource Group: The services will be deployed and grouped under the specified resource group allowing a simpler management in the Azure portal. You can choose to create a new one, or to use  an existing resource group.
+  - Review Legal Terms
+
+Once you have validated the parameters and reviewed and accepted the legal terms, the solution will be deployed to your solution. You can skip to the Message Format section below. 
+
+### Deploying with the Deploy button on the GitHub Readme.md page ###
+
+Click on the blue button below
 
 <a href="https://azuredeploy.net/" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
@@ -26,7 +39,7 @@ When you are logged in, you will be prompted for entering parameters for the sol
   - Region: pick the region you want the services to be deployed to.
   - Choose a solution name: **Important**, the solution name should be all lower case, only ascii caracters and no longer that 16 characters.
   - IoT Hub Sku: select the Sku you want for the IoT Hub : F1 (Free), S1 or S2. Note that you can only have 1 instance of F1 per Azure subscription.
-  - Funciton Sku: select the Sku you wnat for the Azure Function.
+  - Function Sku: select the Sku you wnat for the Azure Function.
 
 
 ![][1]
@@ -46,7 +59,6 @@ Hit **Deploy** in the wizard and wait a couple minutes for the services to be de
 To visualize the newly deployed services in the Azure portal, you can simply click on the "Manage your resources" link displayed in the final screen of the deployment wizard.
 
 Now that the services are deployed, you can look at how you can connect devices to Azure IoT Hub following [instructions from the Azure IoT SDKs repository][manageazureiothub].
-
 
 ## Message format ##
 
