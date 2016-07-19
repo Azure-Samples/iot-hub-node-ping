@@ -1,3 +1,9 @@
+---
+services: iot-hub, functions
+platforms: node
+author: olivierbloch
+---
+
 # Azure IoT Hub ping #
 Simple "ping" solution to help validate a device connectivity to Azure IoT Hub.
 The solution consists in an Azure IoT Hub and an Azure Function deployed at once. The Azure Function is triggered when a new message is received on the IoT Hub and will send the same message content back to the device that sent it.
