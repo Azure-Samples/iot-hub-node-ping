@@ -87,25 +87,11 @@ The [Azure IoT Hub SDKs][azureiotsdks] are portable and can run on most types of
 
 And if you are looking for some cool cheap device to get started fast, ckeck out the [Azure IoT Starter Kits][azureiotstarterkits].
 
-... Or you can test and play around with the Node.js sample provided in this repository. In order to use this one, follow the below steps:
-The prerequisite to run this sample is to have [node.js](http://nodejs.org) installed on the machine you are using and that you have cloned or downloaded the current repository locally.
+... Or you can test and play around with the samples provided in this repository:
 
-1. Create a new device Id in the IoT Hub deployed previously and copy its connection string: you will find instructions on how to do this [here][manageazureiothub].
-1. Open the file devicesample/simple_sample_device.js
-1. Find the below line of code and replace 'connectionstring' with the device's connection string you just copied
+  - [simple node.js sample](devicesample/node/README.md)
+  
 
-  ```
-  var connectionString = '<connectionstring>';
-  ```
-
-1. Open a command prompt, navigate to the devicesample folder and type the following commands
-
-  ```
-  npm install
-  node .
-  ```
-
-At this point the node sample device will establish a secure connection with Azure IoT Hub, send messages every other second and should receive the message back from IoT Hub.
 If you want to get started with Azure IoT Hub, visit [Azure.com/iotdev](http://azure.com/iotdev).
 
 [1]:media/azuredeploy1.png
