@@ -4,6 +4,11 @@ var Message = require('azure-iot-common').Message;
 var connectionString = process.env.AzureIoTHubConnectionString;
 
 module.exports = function (context, myEventHubTrigger) {
+    context.log("Received raw message from device " + myEventHubTrigger);
+    var jsonMessage = JSON.parse(myEventHubTrigger);
+    context.log("After parsing message, reading :");
+    context.log("    deviceId : " + jsonMessage.deviceId);
+    context.log("    message : " + jsonMessage.message);
 
     var client = Client.fromConnectionString(connectionString);
     
@@ -13,11 +18,11 @@ module.exports = function (context, myEventHubTrigger) {
       } else {
         console.log('Client connected');
     
-        // Create a message and send it to the IoT Hub every second
-      var data = JSON.stringify(myEventHubTrigger.message);
-      var message = new Message(data);
-      console.log('Sending message: ' + message.getData() + 'to: ' + myEventHubTrigger.deviceId);
-      client.send(myEventHubTrigger.deviceId, message, printResultFor('send'));
+        // Create a message and send it to the device
+        var data = JSON.stringify(jsonMessage);
+        var message = new Message(data);
+        console.log('Sending message: ' + message.getData() + 'to: ' + jsonMessage.deviceId);
+        client.send(jsonMessage.deviceId, message, printResultFor('send'));
       }
       context.done();
     });

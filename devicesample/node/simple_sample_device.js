@@ -30,7 +30,7 @@ var connectCallback = function (err) {
       client.complete(msg, printResultFor('completed'));
     });
 
-    // Create a message and send it to the IoT Hub every other second
+    // Create a message and send it to the IoT Hub every minute
     var sendInterval = setInterval(function () {
       // Extract deviceId from connection string
       var dId = querystring.parse(connectionString, ';', null, null).DeviceId;
@@ -40,7 +40,7 @@ var connectCallback = function (err) {
       console.log('Sending message: ' + message.getData());
       // Sending message to IoT Hub
       client.sendEvent(message, printResultFor('send'));
-    }, 2000);
+    }, 60000);
 
     client.on('error', function (err) {
       console.error(err.message);
