@@ -1,0 +1,1 @@
+Comming soon: instructions on how to try the IoT Hub ping solution with an Adafruit Huzzah board 
