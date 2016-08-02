@@ -1,9 +1,3 @@
----
-services: iot-hub, functions, storage-accounts, iot-hub-libraries
-platforms: arduino 
-authors: alinast, olivierbloch
----
-
 # Azure IoT Hub ping sample using Adafruit Huzzah ESP8266 Certified Kit
 
 This tutorial describes the process of taking your Adafruit Huzzah ESP8266 kit and using it to send a ping message to IoT Hub 
