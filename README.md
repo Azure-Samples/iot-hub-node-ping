@@ -81,7 +81,7 @@ In order for a device to send a ping and receive the response from the solution,
 Where 'deviceId' is the device's ID as created in the Azure IoT Hub device registry. 
 The message the device will receive back will contain the "message" itself.
 
-## Send a ping from the Node device sample ##
+## Send a ping from a device ##
 
 Now that you have your IoT Hub ping solution deployed, you can test any of your devices that you are trying to connect to Azure IoT Hub using the [Azure IoT Hub SDKs][azureiotsdks].
 
@@ -91,7 +91,8 @@ And if you are looking for some cool cheap device to get started fast, ckeck out
 
 ... Or you can test and play around with the samples provided in this repository:
 
-  - [simple node.js sample](devicesample/node/README.md)
+  - [Node.js sample](devicesample/node/README.md)
+  - [ESP8266 sample](devicesample/ESP8266/README.md)
   
 
 If you want to get started with Azure IoT Hub, visit [Azure.com/iotdev](http://azure.com/iotdev).
