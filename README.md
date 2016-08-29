@@ -93,7 +93,39 @@ And if you are looking for some cool cheap device to get started fast, ckeck out
 
   - [Node.js sample](devicesample/node/README.md)
   - [ESP8266 sample](devicesample/ESP8266/README.md)
-  
+
+## Modifying the Function code once deployed ##
+
+The deployment of the function is done by Azure Resource Manager from the GitHub repository directly. You will notice that the code for the Function's code is "Read Only" when you bring up the Azure portal blade for the Function.
+If you want to edit the code in the portal to customize the function, you will need to disconnect your instance of the function from source control. In order to do so:
+
+  - bring up the Function blade in the Azure portal,
+  - click on the "Function App settings" link in the top right corner,
+  - select "Configure Continuous Integration".
+  - You should see the Deployments blade appearing and showing a deployment from GitHub, select it then click on "Disconnect" in the menu bar of the blade.
+  - Once you have disconnected the deployment from GitHub you will certainly need to manually redeploy the required node modules dependencies (see next paragraph) 
+
+## Manually installing Node.js packages dependencies ##
+
+When the Function is deployed by the Azure Resource Manager, packages dependencies are automatically installed in the Function environment for you. But in some situations, the Function might get updated and you might have to manually reinstall the dependencies.
+You will need to do this if you see an error message at the execution of the function that you are getting some syntax error or that it is using undeclared functions.
+Here is how to manually deploy the required dependencies for the node.js code:
+
+  - bring up the Function blade in the Azure portal,
+  - click on the "Function App settings" link in the top right corner,
+  - select "Go to App Service Settings".
+  - Look for "Console" in the "Development Tools" section, and click on it.
+  - Once you are in the console, you should be directly in the folder D:\home\site\wwwroot.
+  - type the following commands:
+
+    ```
+    cd iothubpingfunction
+    npm installed
+    ```
+
+Once you have run these commands, you can go back to the Function code and check that you are not getting the errors any longer.
+
+
 
 If you want to get started with Azure IoT Hub, visit [Azure.com/iotdev](http://azure.com/iotdev).
 
