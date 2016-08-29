@@ -51,7 +51,6 @@ static void sendMessage(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, const unsign
         else
         {
             LogInfo("IoTHubClient accepted the message for delivery.\r\n");
-            messageDelivered = true;
         }
 
         IoTHubMessage_Destroy(messageHandle);
@@ -152,7 +151,7 @@ void iothub_ping_run(void)
             {
               IoTHubClient_LL_DoWork(iotHubClientHandle);
               ThreadAPI_Sleep(300);
-              if ( messageDelivered&& !receivedMessageBack )
+              if ( messageDelivered && !receivedMessageBack )
               {
                 if (displayedMessageCounter++ == -1)
                 {
