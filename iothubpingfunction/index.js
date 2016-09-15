@@ -4,8 +4,8 @@ var Message = require('azure-iot-common').Message;
 var connectionString = process.env.AzureIoTHubConnectionString;
 
 module.exports = function (context, myEventHubTrigger) {
-    context.log("Received raw message from device " + myEventHubTrigger);
-    var jsonMessage = JSON.parse(myEventHubTrigger);
+    context.log("Received raw message from device" + JSON.stringify(myEventHubTrigger));
+    var jsonMessage = myEventHubTrigger;
     context.log("After parsing message, reading :");
     context.log("    deviceId : " + jsonMessage.deviceId);
     context.log("    message : " + jsonMessage.message);
