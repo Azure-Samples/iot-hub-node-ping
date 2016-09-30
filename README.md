@@ -66,7 +66,9 @@ Hit **Deploy** in the wizard and wait a couple minutes for the services to be de
 
 To visualize the newly deployed services in the Azure portal, you can simply click on the "Manage your resources" link displayed in the final screen of the deployment wizard.
 
-Now that the services are deployed, you can look at how you can connect devices to Azure IoT Hub following [instructions from the Azure IoT SDKs repository][manageazureiothub].
+Now that the services are deployed, you can look at how you can connect devices to Azure IoT Hub following [instructions from the Azure IoT SDKs repository][manageazureiothub].  
+  
+Refer the section below on 'Manually installing Node.js packages dependencies' if you see errors on your function app related to a specific dependency that can't be found.
 
 ## Message format ##
 
@@ -120,7 +122,7 @@ Here is how to manually deploy the required dependencies for the node.js code:
 
     ```
     cd iothubpingfunction
-    npm installed
+    npm install
     ```
 
 Once you have run these commands, you can go back to the Function code and check that you are not getting the errors any longer.
