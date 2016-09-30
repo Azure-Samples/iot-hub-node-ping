@@ -64,25 +64,11 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
 echo Handling Function deployment.
 
 :: npm packages install
-cd "%DEPLOYMENT_TARGET%"
-FOR /F %%d in ('DIR /a:d /B') DO ( 
-    cd %%d
-
-    IF EXIST "package.json" (
-        Echo Installing packages for %%d
-        call npm install 
-    )
-
-    cd ..
-)
-
-:: NuGet package restore
-echo "Restoring function packages"
-
-FOR /F %%d in ('DIR "Project.json" /S /B') DO ( 
-  call nuget restore %%d -PackagesDirectory %home%\data\Functions\packages\nuget
-)
-
+cd "%DEPLOYMENT_TARGET%\iothubpingfunction"
+IF EXIST "package.json" (
+      Echo Installing npm packages
+      call :ExecuteCmd npm install 
+  )
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
