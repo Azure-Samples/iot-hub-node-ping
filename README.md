@@ -91,7 +91,7 @@ The [Azure IoT Hub SDKs][azureiotsdks] are portable and can run on most types of
 
 And if you are looking for some cool cheap device to get started fast, ckeck out the [Azure IoT Starter Kits][azureiotstarterkits].
 
-... Or you can test and play around with the samples provided in this repository:
+... Or you can test and play around with the samples provided in this repository in the folder devicesample:
 
   - [Node.js sample](devicesample/node/README.md)
   - [ESP8266 sample](devicesample/ESP8266/README.md)
@@ -114,19 +114,16 @@ You will need to do this if you see an error message at the execution of the fun
 Here is how to manually deploy the required dependencies for the node.js code:
 
   - bring up the Function blade in the Azure portal,
-  - click on the "Function App settings" link in the top right corner,
-  - select "Go to App Service Settings".
-  - Look for "Console" in the "Development Tools" section, and click on it.
-  - Once you are in the console, you should be directly in the folder D:\home\site\wwwroot.
-  - type the following commands:
+  - click on the "Function App settings" link at the bottom of the left menu,
+  - select "Go to Kudu".
+  - in the console, type the following commands:
 
-    ```
-    cd iothubpingfunction
-    npm install
-    ```
+     ```
+     cd site/wwwroot/iothubpingfunction
+     npm install
+     ```
 
 Once you have run these commands, you can go back to the Function code and check that you are not getting the errors any longer.
-
 
 
 If you want to get started with Azure IoT Hub, visit [Azure.com/iotdev](http://azure.com/iotdev).
