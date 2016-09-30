@@ -93,8 +93,8 @@ And if you are looking for some cool cheap device to get started fast, ckeck out
 
 ... Or you can test and play around with the samples provided in this repository in the folder devicesample:
 
-  - [Node.js sample](devicesample/node/README.md)
-  - [ESP8266 sample](devicesample/ESP8266/README.md)
+  - [Node.js sample](https://github.com/Azure-Samples/iot-hub-node-ping/tree/master/devicesample/node)
+  - [ESP8266 sample](https://github.com/Azure-Samples/iot-hub-node-ping/tree/master/devicesample/ESP8266)
 
 ## Modifying the Function code once deployed ##
 
