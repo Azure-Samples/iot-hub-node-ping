@@ -64,11 +64,14 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
 echo Handling Function deployment.
 
 :: npm packages install
-cd "%DEPLOYMENT_TARGET%\iothubpingfunction"
-IF EXIST "package.json" (
-      Echo Installing npm packages
-      call :ExecuteCmd npm install 
+FOR /F "tokens=*" %%i IN ('DIR /B %DEPLOYMENT_TARGET% /A:D') DO (
+  IF EXIST "%DEPLOYMENT_TARGET%\%%i\package.json" (
+    pushd "%DEPLOYMENT_TARGET%\%%i"
+    npm install --production
+    IF !ERRORLEVEL! NEQ 0 goto error
+    popd
   )
+)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
