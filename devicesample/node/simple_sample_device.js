@@ -28,19 +28,9 @@ var connectCallback = function (err) {
     client.on('message', function (msg) {
       console.log('Received Message from IoT Hub: ' + msg.data);
       client.complete(msg, printResultFor('completed'));
+      // We are done here
+      setTimeout(function(){ process.exit(1);}, 3000);
     });
-
-    // Create a message and send it to the IoT Hub every minute
-    var sendInterval = setInterval(function () {
-      // Extract deviceId from connection string
-      var dId = querystring.parse(connectionString, ';', null, null).DeviceId;
-      // Creating JSON message to send to Azure IoT Hub
-      var data = JSON.stringify({ deviceId: dId, message: "Hello echo" });
-      var message = new Message(data);
-      console.log('Sending message: ' + message.getData());
-      // Sending message to IoT Hub
-      client.sendEvent(message, printResultFor('send'));
-    }, 60000);
 
     client.on('error', function (err) {
       console.error(err.message);
@@ -51,6 +41,16 @@ var connectCallback = function (err) {
       client.removeAllListeners();
       client.connect(connectCallback);
     });
+
+    // Create a message and send it to the IoT Hub
+    // Extract deviceId from connection string
+    var dId = querystring.parse(connectionString, ';', null, null).DeviceId;
+    // Creating JSON message to send to Azure IoT Hub
+    var data = JSON.stringify({ deviceId: dId, message: "Hello echo" });
+    var message = new Message(data);
+    console.log('Sending message: ' + message.getData());
+    // Sending message to IoT Hub
+    client.sendEvent(message, printResultFor('send'));
   }
 };
 
