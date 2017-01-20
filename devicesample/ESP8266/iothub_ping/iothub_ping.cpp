@@ -6,6 +6,8 @@
 StaticJsonBuffer<200> jsonBuffer;
 
 #include <AzureIoTHub.h>
+#include <AzureIoTUtility.h>
+#include <AzureIoTProtocol_MQTT.h>
 
 static const char* deviceId = "[deviceid]";
 static const char* connectionString = "[connectionstring]";
@@ -112,7 +114,7 @@ void iothub_ping_run(void)
     
     IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle;
 
-    iotHubClientHandle = IoTHubClient_LL_CreateFromConnectionString(connectionString, HTTP_Protocol);
+    iotHubClientHandle = IoTHubClient_LL_CreateFromConnectionString(connectionString, MQTT_Protocol);
     if (iotHubClientHandle == NULL)
     {
         LogInfo("Failed on IoTHubClient_CreateFromConnectionString\r\n");

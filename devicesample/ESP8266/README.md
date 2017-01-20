@@ -162,4 +162,4 @@ Please visit our [Azure IoT Dev Center](https://azure.microsoft.com/en-us/develo
 [1]: ../../media/AdafruitInstallLibraries.png
 [2]: ../../media/Error.png
 [3]: ../../media/SerialMonitorConsole.png
-[manageazureiothub]: https://github.com/Azure/azure-iot-sdks/blob/master/doc/manage_iot_hub.md
+[manageazureiothub]: http://aka.ms/manageiothub
