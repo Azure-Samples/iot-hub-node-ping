@@ -34,7 +34,7 @@
         "S1",
         "S2"
       ],
-      "defaultValue": "S1",
+      "defaultValue": "F1",
       "metadata": {
         "description": "The Iothub Sku"
       }
@@ -47,7 +47,7 @@
         "Basic",
         "Standard"
       ],
-      "defaultValue": "Standard",
+      "defaultValue": "Free",
       "metadata": {
         "description": "The pricing tier for the hosting plan for Azure Function."
       }
