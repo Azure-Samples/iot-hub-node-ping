@@ -67,7 +67,7 @@ echo Handling Function deployment.
 FOR /F "tokens=*" %%i IN ('DIR /B %DEPLOYMENT_TARGET% /A:D') DO (
   IF EXIST "%DEPLOYMENT_TARGET%\%%i\package.json" (
     pushd "%DEPLOYMENT_TARGET%\%%i"
-    npm install --production
+    npm install -g --production
     IF !ERRORLEVEL! NEQ 0 goto error
     popd
   )

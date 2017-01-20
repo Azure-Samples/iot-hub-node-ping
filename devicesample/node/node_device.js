@@ -3,24 +3,31 @@
 
 'use strict';
 
-//var Protocol = require('azure-iot-device-amqp').Amqp;
-// Uncomment one of these transports and then change it in fromConnectionString to test other transports
-// var Protocol = require('azure-iot-device-amqp-ws').AmqpWs;
-// var Protocol = require('azure-iot-device-http').Http;
 var Protocol = require('azure-iot-device-mqtt').Mqtt;
 var Client = require('azure-iot-device').Client;
 var Message = require('azure-iot-device').Message;
 
 var querystring = require('querystring');
 
-// String containing Hostname, Device Id & Device Key in the following formats:
-//  "HostName=<iothub_host_name>;DeviceId=<device_id>;SharedAccessKey=<device_key>"
-var connectionString = '<connectionstring>';
+var client = null;
+var deviceConnectionString;
 
-// fromConnectionString must specify a transport constructor, coming from any transport package.
-var client = Client.fromConnectionString(connectionString, Protocol);
+function main() {
+  // receive the IoT Hub connection string as a command line parameter
+  if(process.argv.length < 3) {
+    console.error('Usage: node_device.js <<IoT Hub Device Connection String>>');
+    process.exit(1);
+  }
 
-var connectCallback = function (err) {
+  // open a connection to the device
+  deviceConnectionString = process.argv[2];
+
+  client = Client.fromConnectionString(deviceConnectionString, Protocol);
+  client.open(onConnect);
+}
+
+
+function onConnect(err) {
   if (err) {
     console.error('Could not connect: ' + err.message);
   } else {
@@ -44,7 +51,7 @@ var connectCallback = function (err) {
 
     // Create a message and send it to the IoT Hub
     // Extract deviceId from connection string
-    var dId = querystring.parse(connectionString, ';', null, null).DeviceId;
+    var dId = querystring.parse(deviceConnectionString, ';', null, null).DeviceId;
     // Creating JSON message to send to Azure IoT Hub
     var data = JSON.stringify({ deviceId: dId, message: "Hello echo" });
     var message = new Message(data);
@@ -52,9 +59,7 @@ var connectCallback = function (err) {
     // Sending message to IoT Hub
     client.sendEvent(message, printResultFor('send'));
   }
-};
-
-client.open(connectCallback);
+}
 
 // Helper function to print results in the console
 function printResultFor(op) {
@@ -63,3 +68,5 @@ function printResultFor(op) {
     if (res) console.log(op + ' status: ' + res.constructor.name);
   };
 }
+
+main();
