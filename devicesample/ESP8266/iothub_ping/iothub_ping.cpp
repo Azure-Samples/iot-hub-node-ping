@@ -142,6 +142,7 @@ void iothub_ping_run(void)
             root["message"] = (char*)pingMessage;
             
             char buffer[256];
+            memset (buffer, 0, 256);
             root.printTo(buffer, sizeof(buffer));
             
             LogInfo("Send ping to IoT Hub with message: %s\r\n", buffer);
