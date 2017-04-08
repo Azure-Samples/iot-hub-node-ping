@@ -15,27 +15,27 @@ module.exports = function (context, myEventHubTrigger) {
     
     client.open(function (err) {
       if (err) {
-        console.error('Could not connect: ' + err.message);
+        context.error('Could not connect: ' + err.message);
       } else {
-        console.log('Client connected');
+        context.log('Client connected');
     
         // Create a message and send it to the device
         var data = JSON.stringify(jsonMessage);
         var message = new Message(data);
-        console.log('Sending message: ' + message.getData() + 'to: ' + jsonMessage.deviceId);
-        client.send(jsonMessage.deviceId, message, printResultFor('send'));
+        context.log('Sending message: ' + message.getData() + 'to: ' + jsonMessage.deviceId);
+        client.send(jsonMessage.deviceId, message, printResultFor('send', context));
       }
       context.done();
     });
 }
 
 // Helper function to print results in the console
-function printResultFor(op) {
+function printResultFor(op, context) {
   return function printResult(err, res) {
     if (err) {
-      console.log(op + ' error: ' + err.toString());
+      context.log(op + ' error: ' + err.toString());
     } else {
-      console.log(op + ' status: ' + res.constructor.name);
+      context.log(op + ' status: ' + res.constructor.name);
     }
   };
 }
