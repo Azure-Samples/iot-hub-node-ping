@@ -15,7 +15,7 @@ module.exports = function (context, myEventHubTrigger) {
     
     client.open(function (err) {
       if (err) {
-        context.error('Could not connect: ' + err.message);
+        context.log('Could not connect: ' + err.message);
       } else {
         context.log('Client connected');
     
