@@ -10,7 +10,7 @@ The solution consists in an Azure IoT Hub and an Azure Function deployed at once
 The project contains all the code and deployment configuration needed for the solution.
 It also contains a simple device sample written in JavaScript for Node.js.
 
-**Important**: while this sample shows a simple way to send a message from a device back to himself, and can be adapted to send messages from a device to another one through Azure IoT Hub and Azure Functions, it is NOT recommended to allow such patterns in a production environment unless you manage a proper security/authorization mechanism in the Cloud (in the Azure Functions for example) to ensure you have full control over who's talking to who.  
+**Important**: while this sample shows a simple way to send a message from a device back to itself, and can be adapted to send messages from a device to another one through Azure IoT Hub and Azure Functions, it is NOT recommended to allow such patterns in a production environment unless you manage a proper security/authorization mechanism in the Cloud (in the Azure Functions for example) to ensure you have full control over who's talking to who.  
 
 ## Deploy the ping solution ##
 
